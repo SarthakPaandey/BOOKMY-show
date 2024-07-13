@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { message } from "antd";
 import { LoginUser } from "../calls/users";
+
 function Login() {
   const navigate = useNavigate();
   const onFinish = async (values) => {
@@ -11,7 +12,7 @@ function Login() {
       const response = await LoginUser(values);
       if (response.success) {
         message.success(response.message);
-        // localStorage.setItem('token', response.token);
+        localStorage.setItem("token", response.token);
         navigate("/");
       } else {
         message.error(response.message);
@@ -20,6 +21,13 @@ function Login() {
       message.error(error.message);
     }
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <>
       <header className="App-header">
